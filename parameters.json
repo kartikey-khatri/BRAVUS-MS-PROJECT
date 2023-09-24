@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "servers_aauaemopsqlprd_name": {
+            "value": null
+        },
+        "vaults_aauaerunekv_name": {
+            "value": null
+        },
+        "storageAccounts_sqlvaz7w2ozlvxfwtk_name": {
+            "value": null
+        },
+        "diskEncryptionSets_AU_EncryptionSet_name": {
+            "value": null
+        },
+        "actionGroups_Pipeline_Failure_Notification_name": {
+            "value": null
+        },
+        "metricalerts_Pipeline_Failure_Notification_name": {
+            "value": null
+        },
+        "factories_aauaemopadf_externalid": {
+            "value": null
+        },
+        "virtualNetworks_ADM_VNET_AE_INF_PRD_externalid": {
+            "value": null
+        }
+    }
+}

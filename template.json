@@ -1,0 +1,1978 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "servers_aauaemopsqlprd_name": {
+            "defaultValue": "aauaemopsqlprd",
+            "type": "String"
+        },
+        "vaults_aauaerunekv_name": {
+            "defaultValue": "aauaerunekv",
+            "type": "String"
+        },
+        "storageAccounts_sqlvaz7w2ozlvxfwtk_name": {
+            "defaultValue": "sqlvaz7w2ozlvxfwtk",
+            "type": "String"
+        },
+        "diskEncryptionSets_AU_EncryptionSet_name": {
+            "defaultValue": "AU-EncryptionSet",
+            "type": "String"
+        },
+        "actionGroups_Pipeline_Failure_Notification_name": {
+            "defaultValue": "Pipeline Failure Notification",
+            "type": "String"
+        },
+        "metricalerts_Pipeline_Failure_Notification_name": {
+            "defaultValue": "Pipeline Failure Notification",
+            "type": "String"
+        },
+        "factories_aauaemopadf_externalid": {
+            "defaultValue": "/subscriptions/87b0b128-5a81-4ed5-98b0-de40a84542f8/resourceGroups/AAU-RG-MOP-PRD/providers/Microsoft.DataFactory/factories/aauaemopadf",
+            "type": "String"
+        },
+        "virtualNetworks_ADM_VNET_AE_INF_PRD_externalid": {
+            "defaultValue": "/subscriptions/87b0b128-5a81-4ed5-98b0-de40a84542f8/resourceGroups/ADM-RG-AE-NET-PRD/providers/Microsoft.Network/virtualNetworks/ADM-VNET-AE-INF-PRD",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/actionGroups",
+            "apiVersion": "2023-01-01",
+            "name": "[parameters('actionGroups_Pipeline_Failure_Notification_name')]",
+            "location": "Global",
+            "properties": {
+                "groupShortName": "NotifyGroup",
+                "enabled": true,
+                "emailReceivers": [
+                    {
+                        "name": "Deven VayadaEmail",
+                        "emailAddress": "Deven.Vayada@nqxt.com.au",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Deepak SinghalEmail",
+                        "emailAddress": "Deepak.Singhal@bravus.com.au",
+                        "useCommonAlertSchema": false
+                    },
+                    {
+                        "name": "Rajesh GoyalEmail",
+                        "emailAddress": "rajesh.goyal@adani.com.au",
+                        "useCommonAlertSchema": false
+                    }
+                ],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "eventHubReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": []
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2023-02-01",
+            "name": "[parameters('vaults_aauaerunekv_name')]",
+            "location": "australiaeast",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "Standard"
+                },
+                "tenantId": "cd150723-69e9-463b-8149-a305db48d25e",
+                "accessPolicies": [
+                    {
+                        "tenantId": "cd150723-69e9-463b-8149-a305db48d25e",
+                        "objectId": "13aab853-6139-49f8-aef8-4a36b9ba0bb5",
+                        "permissions": {
+                            "keys": [],
+                            "secrets": [
+                                "Get",
+                                "List"
+                            ],
+                            "certificates": []
+                        }
+                    },
+                    {
+                        "tenantId": "cd150723-69e9-463b-8149-a305db48d25e",
+                        "objectId": "837c5c65-22e0-4996-8d89-8ec4f58de9aa",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "Rotate",
+                                "GetRotationPolicy",
+                                "SetRotationPolicy"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    },
+                    {
+                        "tenantId": "cd150723-69e9-463b-8149-a305db48d25e",
+                        "objectId": "482a1b5e-bd4e-40f3-b62e-9b277d1b68c7",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "GetRotationPolicy",
+                                "SetRotationPolicy",
+                                "Rotate"
+                            ],
+                            "secrets": [
+                                "get",
+                                "list",
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": []
+                        }
+                    },
+                    {
+                        "tenantId": "cd150723-69e9-463b-8149-a305db48d25e",
+                        "objectId": "77c7be9e-4864-4455-8469-37d205c12c3c",
+                        "permissions": {
+                            "keys": [
+                                "get",
+                                "wrapkey",
+                                "unwrapkey"
+                            ],
+                            "secrets": [],
+                            "certificates": []
+                        }
+                    },
+                    {
+                        "tenantId": "cd150723-69e9-463b-8149-a305db48d25e",
+                        "objectId": "9a7a5dd7-4a0f-4a9d-af59-a75668e9a79b",
+                        "permissions": {
+                            "certificates": [],
+                            "keys": [],
+                            "secrets": [
+                                "get",
+                                "list"
+                            ]
+                        }
+                    }
+                ],
+                "enabledForDeployment": true,
+                "enabledForDiskEncryption": true,
+                "enabledForTemplateDeployment": true,
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 7,
+                "enableRbacAuthorization": false,
+                "enablePurgeProtection": true,
+                "vaultUri": "[concat('https://', parameters('vaults_aauaerunekv_name'), '.vault.azure.net/')]",
+                "provisioningState": "Succeeded",
+                "publicNetworkAccess": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[parameters('servers_aauaemopsqlprd_name')]",
+            "location": "australiaeast",
+            "kind": "v12.0",
+            "properties": {
+                "administratorLogin": "sqladmin",
+                "version": "12.0",
+                "minimalTlsVersion": "None",
+                "publicNetworkAccess": "Enabled",
+                "administrators": {
+                    "administratorType": "ActiveDirectory",
+                    "principalType": "User",
+                    "login": "Bitscape.Infra@adani.com.au",
+                    "sid": "837c5c65-22e0-4996-8d89-8ec4f58de9aa",
+                    "tenantId": "cd150723-69e9-463b-8149-a305db48d25e",
+                    "azureADOnlyAuthentication": false
+                },
+                "restrictOutboundNetworkAccess": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2023-01-01",
+            "name": "[parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name')]",
+            "location": "australiaeast",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": false,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/diskEncryptionSets",
+            "apiVersion": "2023-01-02",
+            "name": "[parameters('diskEncryptionSets_AU_EncryptionSet_name')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "activeKey": {
+                    "sourceVault": {
+                        "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+                    },
+                    "keyUrl": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136"
+                },
+                "encryptionType": "EncryptionAtRestWithCustomerKey"
+            }
+        },
+        {
+            "type": "Microsoft.Insights/metricalerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricalerts_Pipeline_Failure_Notification_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_Pipeline_Failure_Notification_name'))]"
+            ],
+            "properties": {
+                "description": "[parameters('metricalerts_Pipeline_Failure_Notification_name')]",
+                "severity": 0,
+                "enabled": true,
+                "scopes": [
+                    "[parameters('factories_aauaemopadf_externalid')]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT1M",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 0,
+                            "name": "90a8969e-c2e3-451b-a31c-27084c3a89d0",
+                            "metricNamespace": "Microsoft.DataFactory/factories",
+                            "metricName": "PipelineFailedRuns",
+                            "dimensions": [
+                                {
+                                    "name": "Name",
+                                    "operator": "Include",
+                                    "values": [
+                                        "APItoMasterDB",
+                                        "MasterDBtoMineDB1"
+                                    ]
+                                },
+                                {
+                                    "name": "FailureType",
+                                    "operator": "Include",
+                                    "values": [
+                                        "UserError",
+                                        "SystemError",
+                                        "BadGateway"
+                                    ]
+                                }
+                            ],
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Total",
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+                },
+                "actions": [
+                    {
+                        "actionGroupId": "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_Pipeline_Failure_Notification_name'))]",
+                        "webHookProperties": {}
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/keys",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/EncryptionKey')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "properties": {
+                "attributes": {
+                    "enabled": true,
+                    "exportable": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/088B3902-77EF-41D6-BA70-293148623A97')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "088B3902-77EF-41D6-BA70-293148623A97.BEK",
+                "VolumeLetter": "E:\\",
+                "VolumeLabel": "ConfigMgr",
+                "MachineName": "AAUVMSC-PCM01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/24C5896A-8B9E-4C91-B8D1-1600ACFEEA78')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "24C5896A-8B9E-4C91-B8D1-1600ACFEEA78.BEK",
+                "VolumeLetter": "G:\\",
+                "VolumeLabel": "Deduplication",
+                "MachineName": "AAUVMCMV-PMSV01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/297855D7-BE7D-4639-9146-4A3C69EED26C')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "297855D7-BE7D-4639-9146-4A3C69EED26C.BEK",
+                "VolumeLetter": "E:\\",
+                "VolumeLabel": "CommVault Services",
+                "MachineName": "AAUVMCMV-PMGT01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/2BF7205B-AE63-4ED0-845A-080BFEE39BE7')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "2BF7205B-AE63-4ED0-845A-080BFEE39BE7.BEK",
+                "VolumeLetter": "E:\\",
+                "VolumeLabel": "SQL",
+                "MachineName": "ADMVMAD-PDC00",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/38DE41FD-D49F-449F-AB0B-FAB865D23B58')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "38DE41FD-D49F-449F-AB0B-FAB865D23B58.BEK",
+                "VolumeLetter": "C:\\",
+                "VolumeLabel": "Windows",
+                "MachineName": "AAUVMWEB-PADW01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/3C6DC457-808B-4333-B7BA-66DE5892D482')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "3C6DC457-808B-4333-B7BA-66DE5892D482.BEK",
+                "VolumeLetter": "C:\\",
+                "MachineName": "AAUVMINF-PMGT01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/4B6DC775-4050-4072-802B-4EE9165546D8')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "4B6DC775-4050-4072-802B-4EE9165546D8.BEK",
+                "VolumeLetter": "F:\\",
+                "VolumeLabel": "NTDS Volume",
+                "MachineName": "ADMVMAD-PDC00",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/6506375D-FDE8-4EE9-827F-5FABEE7CF31E')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "6506375D-FDE8-4EE9-827F-5FABEE7CF31E.BEK",
+                "VolumeLetter": "C:\\",
+                "MachineName": "AAUVMCMV-PMSV01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/66536363-0981-4B1A-83C2-8F2CE35F572E')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "66536363-0981-4B1A-83C2-8F2CE35F572E.BEK",
+                "VolumeLetter": "F:\\",
+                "VolumeLabel": "Data Volume",
+                "MachineName": "AAUVMPVA-PAPP01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/6707F43B-EABC-496C-B5DF-E0057F8AC14F')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "6707F43B-EABC-496C-B5DF-E0057F8AC14F.BEK",
+                "VolumeLetter": "F:\\",
+                "VolumeLabel": "Index Cache",
+                "MachineName": "AAUVMCMV-PMSV01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/73C8AF5C-60E5-4E4B-B71D-45A3BBA7B79C')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "73C8AF5C-60E5-4E4B-B71D-45A3BBA7B79C.BEK",
+                "VolumeLetter": "C:\\",
+                "MachineName": "AAUVMCMV-PMGT01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/7D0EC43E-41D2-4D09-87CA-AEE03BDE5C0F')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "7D0EC43E-41D2-4D09-87CA-AEE03BDE5C0F.BEK",
+                "VolumeLetter": "C:\\",
+                "VolumeLabel": "Windows",
+                "MachineName": "AAU-WVD-0",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/82460103-265B-43B1-9F53-D6754FCDE64E')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "82460103-265B-43B1-9F53-D6754FCDE64E.BEK",
+                "VolumeLetter": "C:\\",
+                "MachineName": "AAUVMSC-PCM01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/8408969E-24A1-41FA-9020-26104B0ABCCB')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "8408969E-24A1-41FA-9020-26104B0ABCCB.BEK",
+                "VolumeLetter": "E:\\",
+                "VolumeLabel": "New Volume",
+                "MachineName": "AAUVMINF-PMGT01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/8FE6AAA8-2F6E-42E2-A642-3360D332D666')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "8FE6AAA8-2F6E-42E2-A642-3360D332D666.BEK",
+                "VolumeLetter": "C:\\",
+                "MachineName": "AAUVMCA-PSCA01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/A05E4C15-D6EC-477F-8016-CE419B1D89BB')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "A05E4C15-D6EC-477F-8016-CE419B1D89BB.BEK",
+                "VolumeLetter": "C:\\",
+                "VolumeLabel": "Windows",
+                "MachineName": "AAU-WVD-2",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/A6A5F1AA-31BF-46F6-94FF-C63160751608')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "A6A5F1AA-31BF-46F6-94FF-C63160751608.BEK",
+                "VolumeLetter": "C:\\",
+                "MachineName": "ADMVMAD-PDC00",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/aauaemopsqlprd')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "Azure SQL": "aauaemopsqlprd",
+                "Login": "sqladmin"
+            },
+            "properties": {
+                "contentType": "rune",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/C5A99223-A43E-426F-9A4A-3BB99ED3B3A0')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "C5A99223-A43E-426F-9A4A-3BB99ED3B3A0.BEK",
+                "VolumeLetter": "C:\\",
+                "MachineName": "AAUVMPVA-PAPP01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/E57712D4-14D5-4385-9BA9-E5C55E44C6B6')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "E57712D4-14D5-4385-9BA9-E5C55E44C6B6.BEK",
+                "VolumeLetter": "E:\\",
+                "VolumeLabel": "Data",
+                "MachineName": "AAUVMWEB-PADW01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2023-02-01",
+            "name": "[concat(parameters('vaults_aauaerunekv_name'), '/F0653764-682C-4CAD-938C-7FF9AEC228A2')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_aauaerunekv_name'))]"
+            ],
+            "tags": {
+                "DiskEncryptionKeyFileName": "F0653764-682C-4CAD-938C-7FF9AEC228A2.BEK",
+                "VolumeLetter": "C:\\",
+                "MachineName": "AAUVMGBK-PAPP01",
+                "DiskEncryptionKeyEncryptionKeyURL": "https://aauaerunekv.vault.azure.net/keys/EncryptionKey/f55764b72d374a4d80c9f73d3fef6136",
+                "DiskEncryptionKeyEncryptionAlgorithm": "RSA-OAEP"
+            },
+            "properties": {
+                "contentType": "Wrapped BEK",
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/administrators",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/ActiveDirectory')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "administratorType": "ActiveDirectory",
+                "login": "Bitscape.Infra@adani.com.au",
+                "sid": "837c5c65-22e0-4996-8d89-8ec4f58de9aa",
+                "tenantId": "cd150723-69e9-463b-8149-a305db48d25e"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advancedThreatProtectionSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/Default')]",
+            "location": "Australia East",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [
+                    "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                    "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                    "BATCH_COMPLETED_GROUP"
+                ],
+                "isAzureMonitorTargetEnabled": true,
+                "isManagedIdentityInUse": false,
+                "state": "Enabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/azureADOnlyAuthentications",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "azureADOnlyAuthentication": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/connectionPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/default')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "connectionType": "Default"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "sku": {
+                "name": "GP_S_Gen5",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 4
+            },
+            "kind": "v12.0,user,vcore,serverless",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 68719476736,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "readScale": "Disabled",
+                "autoPauseDelay": 60,
+                "requestedBackupStorageRedundancy": "Geo",
+                "minCapacity": 0.5,
+                "maintenanceConfigurationId": "/subscriptions/87b0b128-5a81-4ed5-98b0-de40a84542f8/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "isLedgerOn": false,
+                "availabilityZone": "NoPreference"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1')]",
+            "location": "australiaeast",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "sku": {
+                "name": "GP_S_Gen5",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 4
+            },
+            "kind": "v12.0,user,vcore,serverless",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 68719476736,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "readScale": "Disabled",
+                "autoPauseDelay": 120,
+                "requestedBackupStorageRedundancy": "Geo",
+                "minCapacity": 0.5,
+                "maintenanceConfigurationId": "/subscriptions/87b0b128-5a81-4ed5-98b0-de40a84542f8/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "isLedgerOn": false,
+                "availabilityZone": "NoPreference"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/master/Default')]",
+            "location": "Australia East",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/master/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/master/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/devOpsAuditingSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "isAzureMonitorTargetEnabled": true,
+                "isManagedIdentityInUse": false,
+                "state": "Enabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/encryptionProtector",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyName": "ServiceManaged",
+                "serverKeyType": "ServiceManaged",
+                "autoRotationEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/extendedAuditingSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [
+                    "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                    "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                    "BATCH_COMPLETED_GROUP"
+                ],
+                "isAzureMonitorTargetEnabled": true,
+                "isManagedIdentityInUse": false,
+                "state": "Enabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/AllowAllWindowsAzureIps')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/BitScape')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/ClientIPAddress_2022-6-23_14-31-23')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/ClientIPAddress_2023-02-21_01:37:37')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/ClientIPAddress_2023-03-09_01:55:58')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/keys",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/ServiceManaged')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyType": "ServiceManaged"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/securityAlertPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": true,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/sqlVulnerabilityAssessments",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/virtualNetworkRules",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/ProdVnetRule1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "virtualNetworkSubnetId": "[concat(parameters('virtualNetworks_ADM_VNET_AE_INF_PRD_externalid'), '/subnets/ADM-SNET-AE-BCK-PRD')]",
+                "ignoreMissingVnetServiceEndpoint": false
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "shareDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/Default')]",
+            "location": "Australia East",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/Default')]",
+            "location": "Australia East",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "makeBackupsImmutable": false,
+                "weeklyRetention": "PT0S",
+                "monthlyRetention": "PT0S",
+                "yearlyRetention": "PT0S",
+                "weekOfYear": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "makeBackupsImmutable": false,
+                "weeklyRetention": "PT0S",
+                "monthlyRetention": "PT0S",
+                "yearlyRetention": "PT0S",
+                "weekOfYear": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 7,
+                "diffBackupIntervalInHours": 12
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 7,
+                "diffBackupIntervalInHours": 12
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MasterDB/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MasterDB')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true,
+                    "emails": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/MineDB-1/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_aauaemopsqlprd_name'), 'MineDB-1')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true,
+                    "emails": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(parameters('servers_aauaemopsqlprd_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_aauaemopsqlprd_name'))]",
+                "[resourceId('Microsoft.Storage/StorageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "storageContainerPath": "[concat('https://', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '.blob.core.windows.net/vulnerability-assessment/')]",
+                "recurringScans": {
+                    "isEnabled": true,
+                    "emailSubscriptionAdmins": true,
+                    "emails": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default/brc-operations')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default/camp-data')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default/flight-forecast-data')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default/flight-manifest-data')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default/flight-manual-data')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default/flight-utilisation-data')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default/mine-manual-data')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default/sap-data')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), '/default/vulnerability-assessment')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_sqlvaz7w2ozlvxfwtk_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        }
+    ]
+}
